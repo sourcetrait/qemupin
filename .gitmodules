@@ -1,0 +1,6 @@
+[submodule "qemu/now"]
+	path = qemu/now
+	url = https://github.com/qemu/qemu.git
+[submodule "qemu/next"]
+	path = qemu/next
+	url = https://github.com/qemu/qemu.git
