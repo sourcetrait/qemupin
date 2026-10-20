@@ -3,13 +3,14 @@ set -euo pipefail
 
 here="$(cd "$(dirname "$0")" && pwd)"
 src="${QEMUPIN_SRC:-/src}"
+target="${QEMUPIN_TARGET:-$(mktemp -d -t qemupin.XXXXXX)}"
 links="${QEMUPIN_MAX_LINKS:-2}"
 if [ "$#" -gt 0 ]; then pins=("$@"); else pins=(now next); fi
 
 build() {
     local pin="$1"
     local qsrc="$src/qemu/$pin"
-    local target="$src/.target/ubuntu/26/$pin"
+    local out="$target/$pin"
     local want have
     want="$(tr -d '[:space:]' < "$src/PIN.$pin.txt")"
     if [ ! -x "$qsrc/configure" ]; then
@@ -23,14 +24,15 @@ build() {
     fi
     local args
     mapfile -t args < "$here/configure.args.list"
-    mkdir -p "$target/build"
-    cd "$target/build"
-    "$qsrc/configure" --prefix="$target/install" "${args[@]}" -Dbackend_max_links="$links"
+    mkdir -p "$out/build"
+    cd "$out/build"
+    "$qsrc/configure" --prefix="$out/install" "${args[@]}" -Dbackend_max_links="$links"
     make -j"$(nproc)"
     make install
-    echo "qemupin: QEMU $have ($pin) installed in $target/install"
+    echo "qemupin: QEMU $have ($pin) installed in $out/install"
 }
 
+echo "qemupin: building into $target"
 built=" "
 for pin in "${pins[@]}"; do
     version="$(tr -d '[:space:]' < "$src/PIN.$pin.txt")"
