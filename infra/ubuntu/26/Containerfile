@@ -1,0 +1,10 @@
+FROM docker.io/library/ubuntu:26.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+COPY packages.apt.list /opt/qemupin/packages.apt.list
+RUN apt-get update \
+    && xargs -a /opt/qemupin/packages.apt.list apt-get install -y \
+    && rm -rf /var/lib/apt/lists/*
+COPY configure.args.list do.bash /opt/qemupin/
+WORKDIR /src
+CMD ["/opt/qemupin/do.bash"]
