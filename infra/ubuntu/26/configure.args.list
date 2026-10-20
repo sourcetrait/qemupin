@@ -20,6 +20,7 @@
 --enable-guest-agent
 --enable-install-blobs
 --enable-lto
+--disable-werror
 --disable-debug-info
 --disable-debug-tcg
 --disable-debug-mutex
