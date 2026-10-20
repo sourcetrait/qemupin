@@ -1,8 +1,10 @@
 acpica-tools
+bison
 build-essential
 bzip2
 dbus-daemon
 device-tree-compiler
+flex
 git
 libaio-dev
 libasound2-dev
