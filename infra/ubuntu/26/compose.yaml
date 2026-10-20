@@ -1,0 +1,10 @@
+services:
+  qemupin:
+    build:
+      context: .
+      dockerfile: Containerfile
+    image: localhost/qemupin-ubuntu-26
+    volumes:
+      - ../../..:/src:Z
+    stdin_open: true
+    tty: true
